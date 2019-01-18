@@ -1,0 +1,25 @@
+create or replace procedure c_insert(v_cname in varchar2,v_begintime in number,v_xueshi in number,v_credit in number,vresult out number) as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from course_inf where cname=v_cname;
+     if vcnt= 0 then
+         insert into course_inf(cname,begintime,xueshi,credit) values(v_cname,v_begintime,v_xueshi,v_credit);
+         vresult:=1;
+      else
+         vresult:=0;
+      end if;
+    commit;
+    exception
+      when others then
+           vresult:=2;
+end c_insert;
+
+select cid,cname,begintime 课程学期,xueshi 学时,credit 学分 from course_inf;
+
+//执行程序块添加课程存储过程
+declare
+vresult  number;
+begin
+c_insert('轮滑',1,8,4,vresult);
+end;
+         

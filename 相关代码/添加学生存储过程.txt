@@ -1,0 +1,25 @@
+create or replace procedure s_insert(v_sname in varchar2,v_zhuanye in varchar2,v_ssex in varchar2,v_sbirthday in date,v_snote in varchar2,vresult out number) as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from stu_inf where sname=v_sname;
+     if vcnt= 0 then
+       insert into stu_inf(sname,zhuanye,ssex,sbirthday,snote) values(v_sname,v_zhuanye,v_ssex,v_sbirthday,v_snote);
+         vresult:=1;
+      else
+         vresult:=0;   
+      end if;
+    commit;
+    exception
+      when others then
+           vresult:=2;
+end s_insert;
+
+select * from stu_inf;
+
+//执行程序块修改成绩存储过程
+declare
+vresult  number;
+begin
+s_insert('大明','软件工程','男',TO_DATE('20001125000000', 'YYYYMMDDHH24MISS'),'狗剩啊',vresult);
+end;
+         

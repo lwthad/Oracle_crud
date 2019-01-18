@@ -1,0 +1,6 @@
+
+
+//导入
+Imp student/stu123 file=c:\student.dmp full=y
+//导出
+exp  student/stu123  file=c:\student.dmp full=n;

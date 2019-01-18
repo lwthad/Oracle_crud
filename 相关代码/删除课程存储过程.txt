@@ -1,0 +1,26 @@
+create or replace procedure c_delete(v_cid in number,vresult out number) 
+as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from course_inf where cid=v_cid;
+     if vcnt= 1 then
+       delete from course_inf where cid=v_cid;
+         vresult:=1;
+      else
+         vresult:=0;   
+      end if;
+    commit;
+    exception
+      when others then
+           vresult:=2;
+end c_delete;
+
+select cid,cname,begintime 课程学期,xueshi 学时,credit 学分 from course_inf;
+
+//执行程序块删除课程
+declare
+vresult number;
+begin
+c_delete(1006,vresult);
+end;
+         

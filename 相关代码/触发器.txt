@@ -1,0 +1,14 @@
+//触发器删除学生、课程
+create or replace trigger tri_delstu
+before delete on stu_inf
+ for each row
+begin
+  delete from stu_course where sid=:old.sid;
+end tri_delstu;
+
+create or replace trigger tri_delcourse
+before delete on course_inf
+ for each row
+begin
+  delete from stu_course where cid=:old.cid;
+end tri_delcourse;

@@ -1,0 +1,85 @@
+//创建选课表主键序列
+create sequence seq_stu_course
+minvalue 52700
+nomaxvalue 
+start with 52700
+increment by 1
+nocycle 
+nocache;
+drop sequence seq_stu_course;
+//创建学生表主键序列
+create sequence seq_stu
+minvalue 1542101
+nomaxvalue 
+start with 1542101
+increment by 1
+nocycle 
+nocache;
+drop sequence seq_stu_course;
+//创建课程表主键序列
+create sequence seq_course
+minvalue 1001
+nomaxvalue 
+start with 1001
+increment by 1
+nocycle 
+nocache;
+drop sequence seq_stu_course;
+
+//创建触发器自动插入选课表主键
+create or replace trigger tri_scid
+ before insert on stu_course
+ for each row
+begin
+  select seq_stu_course.nextval into :new.scid from dual;
+end tri_scid;
+
+//创建触发器自动插入学生表主键
+create or replace trigger tri_sid
+ before insert on stu_inf
+ for each row
+begin
+  select seq_stu.nextval into :new.sid from dual;
+end tri_sid;
+
+//创建触发器自动插入课程表主键
+create or replace trigger tri_cid
+ before insert on course_inf
+ for each row
+begin
+  select seq_course.nextval into :new.cid from dual;
+end tri_cid;
+
+//插入学生数据
+insert into stu_inf(sname,zhuanye,ssex,sbirthday,snote) values('卞士成', '软件工程', '男', TO_DATE('19930125000000','YYYYMMDDHH24MISS'),'helloworld');
+insert into stu_inf(sname,zhuanye,ssex,sbirthday,snote) values('李璐缘', '软件工程', '男', TO_DATE('19960823000000', 'YYYYMMDDHH24MISS'),'老a');
+insert into stu_inf(sname,zhuanye,ssex,sbirthday,snote) values('周杰', '软件工程', '男',TO_DATE('19950405000000', 'YYYYMMDDHH24MISS'),'狗主人');
+select * from stu_inf;
+
+//插入课程数据
+insert into course_inf(cname,begintime,xueshi,credit) values('软件项目管理',6,12,4);
+insert into course_inf(cname,begintime,xueshi,credit) values('软件设计',6,12,4);
+insert into course_inf(cname,begintime,xueshi,credit) values('Java2EE',6,13,6);
+insert into course_inf(cname,begintime,xueshi,credit) values('体育',4,8,2);
+insert into course_inf(cname,begintime,xueshi,credit) values('美术',1,6,3);
+select * from course_inf;  
+
+//利用触发器插入选课数据
+insert into stu_course(sid,cid,score) values(1542101,1001,60);
+insert into stu_course(sid,cid,score) values(1542101,1002,59);
+insert into stu_course(sid,cid,score) values(1542101,1005,82);
+总学分=4+0+3=7
+insert into stu_course(sid,cid,score) values(1542102,1002,90);
+insert into stu_course(sid,cid,score) values(1542102,1004,100);
+总学分=4+2=6
+insert into stu_course(sid,cid,score) values(1542103,1001,90);
+insert into stu_course(sid,cid,score) values(1542103,1003,90);
+insert into stu_course(sid,cid,score) values(1542103,1005,90);
+总学分=4+6+3=13
+select * from stu_course order by sid; 
+
+
+//利用序列插入选课数据
+insert into stu_course(scid,sid,cid,score)values(seq_stu_course.nextval, 1542159201,0011,98);
+insert into stu_course(scid,sid,cid,score)values(seq_stu_course.nextval, 1542159202,0012,88);
+insert into stu_course(scid,sid,cid,score)values(seq_stu_course.nextval, 1542159203,0010,78);

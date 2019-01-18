@@ -1,0 +1,28 @@
+create or replace procedure c_update(v_cid in number,v_cname in varchar2,v_begintime in number,v_xueshi in number,v_credit in number,vresult out number) as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from course_inf where cid=v_cid;
+     if vcnt= 1 then
+       update course_inf set cname=v_cname where cid=v_cid;
+       update course_inf set begintime=v_begintime where cid=v_cid;
+       update course_inf set xueshi=v_xueshi where cid=v_cid;
+       update course_inf set credit=v_credit where cid=v_cid;
+         vresult:=1;
+      else
+         vresult:=0;
+      end if;
+    commit;
+    exception
+      when others then
+           vresult:=2;
+end c_update;
+
+select cid,cname,begintime 课程学期,xueshi 学时,credit 学分 from course_inf;
+
+//执行程序块修改成绩
+declare
+vresult  number;
+begin
+c_update(1001,'软件项目管理',7,11,8,vresult);
+end;
+         

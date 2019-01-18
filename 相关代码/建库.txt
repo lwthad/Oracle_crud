@@ -1,0 +1,29 @@
+sqlplus / as sysdba;
+create user student identified by stu123;
+grant connect,resource to student;
+conn student/stu123;
+conn / as sysdba;
+
+CREATE TABLE stu_inf(
+sid NUMBER(10)  PRIMARY KEY,
+sname VARCHAR2(14) UNIQUE,
+zhuanye VARCHAR2(15),
+ssex VARCHAR2(10) CHECK(ssex IN('ÄÐ','Å®')),
+sbirthday date,
+snote VARCHAR2(50)
+);
+CREATE TABLE course_inf(
+cid NUMBER(10)  PRIMARY KEY,
+cname VARCHAR2(14) UNIQUE,
+begintime NUMBER(10) CHECK(begintime>=1 and begintime<=8),
+xueshi NUMBER(10) CHECK(xueshi>0),
+credit NUMBER(5) CHECK(credit>0)
+);
+CREATE TABLE stu_course(
+scid NUMBER(15) PRIMARY KEY,
+sid NUMBER(10) CONSTRAINT FK_stu REFERENCES stu_inf(sid),
+cid NUMBER(10) CONSTRAINT FK_course REFERENCES course_inf(cid),
+score NUMBER(10) CHECK(score>=0 and score<=100)
+);
+ 
+

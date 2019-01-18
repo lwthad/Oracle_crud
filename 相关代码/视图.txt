@@ -1,0 +1,24 @@
+conn / as sysdba;
+grant create view to student;
+conn student/stu123;
+
+//查询学生所有课程成绩
+create or replace view view_score 
+as
+select sid as 学号,cid as 课程号,score as 成绩
+from stu_course
+order by score desc;
+//查询成绩视图
+select * from view_score;
+
+//查询学生总学分
+create or replace view credit_view 
+as
+select sname as 姓名,s.sid as 学号,sum(credit) as 总学分 
+from stu_inf s,course_inf c,stu_course sc
+where s.sid=sc.sid and c.cid=sc.cid 
+and score>=60
+group by sname,s.sid
+order by sum(credit) desc;
+//查询学分视图
+select * from credit_view;

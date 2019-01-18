@@ -1,0 +1,30 @@
+create or replace procedure s_update(v_sid in number,v_sname in varchar2,v_zhuanye in varchar2,v_ssex in varchar2,v_sbirthday in date,v_snote in varchar2,vresult out number) as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from stu_inf where sid=v_sid;
+     if vcnt= 1 then
+       update stu_inf set sname=v_sname where sid=v_sid;
+       update stu_inf set sname=v_sname where sid=v_sid;
+       update stu_inf set zhuanye=v_zhuanye where sid=v_sid;
+       update stu_inf set ssex=v_ssex where sid=v_sid;
+       update stu_inf set sbirthday=v_sbirthday where sid=v_sid;
+       update stu_inf set snote=v_snote where sid=v_sid;
+         vresult:=1;
+      else
+         vresult:=0;
+      end if;
+    commit;
+    exception
+      when others then
+           vresult:=2;
+end s_update;
+
+select * from stu_inf;
+
+//执行程序块修改学生信息
+declare
+vresult  number;
+begin
+s_update(1542102,'李露远','软件工程','男',TO_DATE('19940216000000', 'YYYYMMDDHH24MISS'),'狗剩',vresult);
+end;
+         

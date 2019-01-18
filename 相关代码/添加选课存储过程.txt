@@ -1,0 +1,27 @@
+//添加选课表记录
+create or replace procedure sc_insert(vs_id in number,vc_id in number ,vscore in number,vresult out number) 
+as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from stu_course where (sid=vs_id)and(cid=vc_id);
+      if vcnt= 0 then
+       insert into stu_course(sid,cid,score) values(vs_id,vc_id,vscore);
+         vresult:=1;
+    else
+        vresult:=0;
+     end if;
+   Commit;
+   exception
+     when others then
+       vresult:=2;
+end sc_insert;
+
+set serveroutput on;  // 显示执行结果
+select * from stu_course;
+//执行程序块修改成绩存储过程
+declare
+vresult  number;
+begin
+sc_insert(1542104,1004,60,vresult);
+end;
+

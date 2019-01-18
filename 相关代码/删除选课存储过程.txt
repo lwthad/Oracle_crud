@@ -1,0 +1,28 @@
+//删除选课表记录
+create or replace procedure sc_delete(vs_id in number,vc_id in number,vresult out number) 
+as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from stu_course where (sid=vs_id)and(cid=vc_id);
+      if vcnt= 1 then
+       delete from stu_course where (sid=vs_id)and(cid=vc_id);
+         vresult:=1;
+    else
+        vresult:=0;
+     end if;
+   Commit;
+   exception
+     when others then
+       vresult:=2;
+end sc_delete;
+
+set serveroutput on;  // 显示执行结果
+select * from stu_course;
+
+//执行程序块删除选课
+declare
+vresult number;
+begin
+sc_delete(1542103,1002,vresult);
+end;
+

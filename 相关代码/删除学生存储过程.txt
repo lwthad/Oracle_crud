@@ -1,0 +1,26 @@
+create or replace procedure s_delete(v_sid in number,vresult out number) 
+as
+vcnt number:=0;
+begin
+   select count(*) into vcnt from stu_inf where sid=v_sid;
+     if vcnt= 1 then
+       delete from stu_inf where sid=v_sid;
+         vresult:=1;
+      else
+         vresult:=0;   
+      end if;
+    commit;
+    exception
+      when others then
+           vresult:=2;
+end s_delete;
+
+select * from stu_inf;
+
+//执行程序块删除学生
+declare
+vresult  number;
+begin
+s_delete(1542104,vresult);
+end;
+         
